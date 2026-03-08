@@ -1,0 +1,205 @@
+-- Insert records into employee table
+INSERT INTO employee (empid,name,dept,salary)
+VALUES
+(1,'Ravi','IT',30000),
+(2,'Aman','HR',25000),
+(3,'Neha','IT',28000);
+
+-- Display all employees
+SELECT * FROM employee;
+
+-- Display only employee id
+SELECT empid FROM employee;
+
+-- Update salary of HR department
+UPDATE employee
+SET salary = 50000
+WHERE dept = 'HR';
+
+-- Change employee name
+UPDATE employee
+SET name = 'Raj'
+WHERE name = 'Jaby';
+
+-- Delete employees from HR department
+DELETE FROM employee
+WHERE dept = 'HR';
+
+-- Delete employee named Jaf
+DELETE FROM employee
+WHERE name = 'Jaf';
+
+-- Find employees whose age > 20
+SELECT *
+FROM employee
+WHERE age > 20;
+
+-- Find unique salaries
+SELECT DISTINCT salary
+FROM employee;
+
+-- Find employees from Pune with age > 18
+SELECT *
+FROM employee
+WHERE city = 'Pune' AND age > 18;
+
+-- Employees from IT or HR
+SELECT *
+FROM employee
+WHERE dept = 'IT' OR dept = 'HR';
+
+-- Employees not from IT and HR
+SELECT *
+FROM employee
+WHERE dept NOT IN ('IT','HR');
+
+-- Employees ordered by salary descending
+SELECT *
+FROM employee
+ORDER BY salary DESC;
+
+-- Top 2 highest paid employees
+SELECT *
+FROM employee
+ORDER BY salary DESC
+LIMIT 2;
+
+-- Maximum salary
+SELECT MAX(salary)
+FROM employee;
+
+-- Minimum salary
+SELECT MIN(salary)
+FROM employee;
+
+-- Average salary
+SELECT AVG(salary)
+FROM employee;
+
+-- Total salary
+SELECT SUM(salary)
+FROM employee;
+
+-- Count employees
+SELECT COUNT(*)
+FROM employee;
+
+-- Employees count by city
+SELECT city, COUNT(name)
+FROM employee
+GROUP BY city;
+
+-- Employees count by department
+SELECT dept, COUNT(empid)
+FROM employee
+GROUP BY dept
+ORDER BY COUNT(empid) DESC;
+
+-- Departments with more than 5 employees
+SELECT dept
+FROM employee
+GROUP BY dept
+HAVING COUNT(*) > 5;
+
+-- Employees earning above average salary
+SELECT salary
+FROM employee
+WHERE salary > (SELECT AVG(salary) FROM employee);
+
+-- Employees without manager
+SELECT *
+FROM employee
+WHERE manager_id IS NULL;
+
+-- Second highest salary (method 1)
+SELECT DISTINCT salary
+FROM employee
+ORDER BY salary DESC
+LIMIT 1 OFFSET 1;
+
+-- Second highest salary (method 2)
+SELECT MAX(salary)
+FROM employee
+WHERE salary < (SELECT MAX(salary) FROM employee);
+
+-- Nth highest salary
+SELECT DISTINCT salary
+FROM employee
+ORDER BY salary DESC
+LIMIT n-1,1;
+
+-- Inner join example
+SELECT *
+FROM employee e
+INNER JOIN department d
+ON e.dept_id = d.id;
+
+-- Left join example
+SELECT *
+FROM employee e
+LEFT JOIN department d
+ON e.dept_id = d.id;
+
+-- Self join (employee with manager name)
+SELECT e.emp_name, m.emp_name
+FROM employee e
+JOIN employee m
+ON e.manager_id = m.emp_id;
+
+-- Full name using CONCAT
+SELECT CONCAT(firstname,' ',lastname) AS fullname
+FROM employee;
+
+-- Replace characters in name
+SELECT REPLACE(firstname,'A','@')
+FROM employee;
+
+-- Extract email domain
+SELECT SUBSTRING_INDEX(email,'@',-1) AS domain
+FROM employee;
+
+-- Remove extra spaces
+SELECT TRIM(firstname), TRIM(lastname)
+FROM employee;
+
+-- Current date
+SELECT CURDATE();
+
+-- Employees joined in 2020
+SELECT *
+FROM employee
+WHERE YEAR(doj) = 2020;
+
+-- Name starts with S
+SELECT *
+FROM employee
+WHERE firstname LIKE 'S%';
+
+-- Name ends with A
+SELECT *
+FROM employee
+WHERE firstname LIKE '%A';
+
+-- Pattern search example
+SELECT *
+FROM employee
+WHERE firstname LIKE '____A';
+
+-- Salary between range
+SELECT *
+FROM employee
+WHERE salary BETWEEN 4000 AND 8000;
+
+-- Extract domain name from email
+SELECT SUBSTRING_INDEX(email,'@',-1) AS domain_name
+FROM employee;
+
+-- Remove spaces example
+SELECT TRIM(firstname), TRIM(lastname)
+FROM employee;
+
+-- Department employee count
+SELECT dept, COUNT(*) AS totalemps
+FROM employee
+GROUP BY dept
+ORDER BY totalemps ASC;
