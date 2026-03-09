@@ -203,3 +203,96 @@ SELECT dept, COUNT(*) AS totalemps
 FROM employee
 GROUP BY dept
 ORDER BY totalemps ASC;
+
+
+-- Employees earning more than the average salary of IT department
+SELECT *
+FROM employee
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employee
+    WHERE dept = 'IT'
+);
+
+-- Employee with highest salary in each department
+SELECT *
+FROM employee e
+WHERE salary = (
+    SELECT MAX(salary)
+    FROM employee
+    WHERE dept = e.dept
+);
+
+-- Employees earning more than minimum salary
+SELECT *
+FROM employee
+WHERE salary > (
+    SELECT MIN(salary)
+    FROM employee
+);
+
+-- Employees earning above overall average salary
+SELECT *
+FROM employee
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employee
+);
+
+-- Departments having employees with salary greater than 30000
+SELECT DISTINCT dept
+FROM employee
+WHERE dept IN (
+    SELECT dept
+    FROM employee
+    WHERE salary > 30000
+);
+
+-- Employees with second highest salary using subquery
+SELECT *
+FROM employee
+WHERE salary = (
+    SELECT MAX(salary)
+    FROM employee
+    WHERE salary < (
+        SELECT MAX(salary)
+        FROM employee
+    )
+);
+
+-- Employees working in same department as Ravi
+SELECT *
+FROM employee
+WHERE dept = (
+    SELECT dept
+    FROM employee
+    WHERE name = 'Ravi'
+);
+
+-- Employees whose salary is greater than all HR employees
+SELECT *
+FROM employee
+WHERE salary > ALL (
+    SELECT salary
+    FROM employee
+    WHERE dept = 'HR'
+);
+
+-- Employees whose salary is less than any IT employee
+SELECT *
+FROM employee
+WHERE salary < ANY (
+    SELECT salary
+    FROM employee
+    WHERE dept = 'IT'
+);
+
+-- Employees working in departments having more than 2 employees
+SELECT *
+FROM employee
+WHERE dept IN (
+    SELECT dept
+    FROM employee
+    GROUP BY dept
+    HAVING COUNT(*) > 2
+);
